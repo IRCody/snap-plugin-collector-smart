@@ -280,8 +280,10 @@ func (s *sysutilProviderLinux) ListDevices() ([]string, error) {
 		}
 
 		table := strings.Fields(scan.Text())
+		fmt.Println("Raw table line: ", table)
 		if table[0] == "8" && strings.IndexFunc(table[3], unicode.IsDigit) < 0 {
 			result = append(result, table[3])
+			fmt.Println("FOUND DEVICE: ", table[3])
 		}
 
 	}

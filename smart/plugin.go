@@ -178,9 +178,11 @@ func (sc *SmartCollector) CollectMetrics(mts []plugin.MetricType) ([]plugin.Metr
 	t := time.Now()
 	for _, mt := range mts {
 		ns := mt.Namespace()
+		fmt.Println("Processing metric with namespace: ", ns)
 		disk, attribute_path := parseName(ns.Strings())
 		if disk == "*" {
 			// All system disks requested
+			fmt.Println("Getting all disks")
 			devices, err := sysUtilProvider.ListDevices()
 			if err != nil {
 				return nil, err
@@ -195,6 +197,7 @@ func (sc *SmartCollector) CollectMetrics(mts []plugin.MetricType) ([]plugin.Metr
 			}
 		} else {
 			// Single disk requested
+			fmt.Println("Getting a single disk")
 			result, err := sc.DiskMetrics(ns, t, disk, attribute_path, buffered_results)
 			if err != nil {
 				sc.logger.Warning(fmt.Sprintf("Error collecting SMART %s data on %s disk: %v", attribute_path, disk, err))
